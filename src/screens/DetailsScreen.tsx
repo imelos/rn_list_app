@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {Surface} from 'react-native-paper';
 
 import {Props} from '@src/navigation/Navigation';
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
     borderRadius: 10,
+    height: '100%',
   },
 });
 
