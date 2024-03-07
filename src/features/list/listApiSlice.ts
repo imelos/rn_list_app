@@ -1,12 +1,16 @@
 import {apiSlice} from '@src/API/apiSlice';
 
-// type ListApiResponse = any;
-type ListApiParams = any;
-
 type BaseResponse = {
   code: number;
   errors: unknown[];
   status: string;
+};
+
+type ListApiParams = {
+  limit: number;
+  p: number;
+  q: string;
+  world: string;
 };
 
 type ListApiResponse = BaseResponse & {data: {items: any[]}};
@@ -18,12 +22,7 @@ export const listApiSlice = apiSlice.injectEndpoints({
         return {
           url: '/elastic',
           method: 'GET',
-          params: {
-            limit: 20,
-            p: 1,
-            q: '',
-            world: 'de',
-          },
+          params: params,
         };
       },
     }),
