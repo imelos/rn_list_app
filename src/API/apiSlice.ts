@@ -8,10 +8,9 @@ import {RootState} from '@src/app/configureStore';
 import {BaseQueryFn, FetchBaseQueryError} from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://jsonplaceholder.typicode.com',
+  baseUrl: 'https://api.eduki.com/api/v1',
   credentials: 'include',
   prepareHeaders: (headers, {getState}) => {
-    const state = getState() as RootState;
     const token = `eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJsVjZvNzJJQjd3cGdsRHhCIiwianRpIjoiNGFiZjA1
     MTI2NzNhY2ZkZTI5NTcxMGU3NjgxNjVjMmY1MWFjNzNlNTFkOWUwNWFkZmZjMjUyNzFkODY1ZDc4Z
     TYxM2FjZTNkNDYxNjhhZWYiLCJpYXQiOjE2Nzg2NjAxMjcuODIzNDcyLCJuYmYiOjE2Nzg2NjAxMjcuODIz
@@ -26,7 +25,7 @@ const baseQuery = fetchBaseQuery({
     L9SuXgADlI-2QR1hWQ-i7RW2ElUhLt7PDQlEw5y49OLe5nhOMOxaSVRV8sbk5lX9CS28cJBezbg0ArLgFO
     v1nH88VNBZQKdM`;
     if (token) {
-      headers.set('authorization', 'token');
+      headers.set('(Authorization:', token);
     }
     return headers;
   },
