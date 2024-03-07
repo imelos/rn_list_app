@@ -1,11 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-} from 'react-native';
+import {StyleSheet, View, FlatList} from 'react-native';
 import {ListApiParams} from './listApiSlice';
 import {useDebouncedCallback} from 'use-debounce';
 import {TextInput, ActivityIndicator} from 'react-native-paper';
@@ -36,7 +30,6 @@ const List: React.FC = () => {
     getListItems(params)
       .unwrap()
       .then(res => {
-        console.log(res);
         setIsPageLoading(false);
         setList(
           params.p === 1
@@ -54,7 +47,6 @@ const List: React.FC = () => {
   }, 300);
 
   const changeSearchFilter = (val: string) => {
-    console.log(val);
     setText(val);
     setParams({
       limit: 20,
@@ -78,13 +70,13 @@ const List: React.FC = () => {
   };
 
   const onEndReached = ({distanceFromEnd}: {distanceFromEnd: number}) => {
-    if (distanceFromEnd === 0) return;
+    if (distanceFromEnd <= 0) return;
     setIsPageLoading(true);
     setParams({
       limit: 20,
       p: params.p + 1,
       q: params.q,
-      world: 'de',
+      world: params.world,
     });
   };
 
@@ -96,7 +88,7 @@ const List: React.FC = () => {
         value={text}
         label="Search"
       />
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={styles.listContainer}>
         {isLoading ? (
           renderActivityIndicator()
         ) : (
@@ -108,7 +100,7 @@ const List: React.FC = () => {
             keyExtractor={item => item.id.toString()}
             ListFooterComponent={renderFooter}
             onEndReached={onEndReached}
-            onEndReachedThreshold={0.5} // Load more data when reaching 50% of the end
+            onEndReachedThreshold={0.5}
           />
         )}
       </View>
@@ -121,11 +113,13 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  listContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   input: {
-    // height: 40,
     margin: 10,
-    // borderWidth: 1,
-    // padding: 10,
     marginBottom: 1,
   },
 });
