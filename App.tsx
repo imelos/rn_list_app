@@ -1,15 +1,22 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import 'react-native-gesture-handler';
+
+import {Provider} from 'react-redux';
+import {store} from '@src/app/configureStore';
 
 import Navigation from '@src/navigation/Navigation';
 // import {COLORS} from '@src/colors';
 
 function App(): React.JSX.Element {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar animated={true} />
-      <Navigation />
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaProvider style={styles.container}>
+        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+        <Navigation />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
