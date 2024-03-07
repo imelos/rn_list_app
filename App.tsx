@@ -7,7 +7,7 @@ import {SafeAreaView, StatusBar, StyleSheet, Text} from 'react-native';
 function App(): React.JSX.Element {
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar animated={true}/>
+      <StatusBar animated={true} />
       {/* <Navigation /> */}
       <Text>ff</Text>
     </SafeAreaView>
