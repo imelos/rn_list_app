@@ -46,7 +46,14 @@ export default function Navigation(): JSX.Element {
           headerShown: false,
         }}>
         <RootStack.Screen name="list" component={ListScreen} />
-        <RootStack.Screen name="details" component={DetailsScreen} />
+        <RootStack.Screen
+          options={{
+            title: 'Details',
+            headerShown: true,
+          }}
+          name="details"
+          component={DetailsScreen}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );

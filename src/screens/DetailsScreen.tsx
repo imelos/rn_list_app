@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
-import {Surface, Text} from 'react-native-paper';
+import {Surface} from 'react-native-paper';
 
 import {Props} from '@src/navigation/Navigation';
 import Details from '@src/features/details/Details';

@@ -1,9 +1,8 @@
 import React from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-import {Props} from '@src/navigation/Navigation';
-import {ListItemProps} from '../list/listApiSlice';
+import {ListItemProps} from '@src/features/list/listApiSlice';
 import {useDeviceOrientation} from '@react-native-community/hooks';
-import {Surface, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 
 const Details: React.FC<{data: ListItemProps}> = props => {
   const orientation = useDeviceOrientation();

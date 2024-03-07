@@ -1,14 +1,12 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {StatusBar, StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import 'react-native-gesture-handler';
-
-import {Provider} from 'react-redux';
-import {store} from '@src/app/configureStore';
-
-import Navigation from '@src/navigation/Navigation';
 import {PaperProvider} from 'react-native-paper';
-// import {COLORS} from '@src/colors';
+import {Provider} from 'react-redux';
+
+import {store} from '@src/app/configureStore';
+import Navigation from '@src/navigation/Navigation';
 
 function App(): React.JSX.Element {
   return (
