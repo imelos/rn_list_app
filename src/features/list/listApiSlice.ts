@@ -22,7 +22,7 @@ export type ListItemProps = {
 };
 
 export type ListApiResponse = BaseResponse & {
-  data: {items: {materials: ListItemProps[]}};
+  data: {items: {materials: ListItemProps[]}; total: number};
 };
 
 export const listApiSlice = apiSlice.injectEndpoints({

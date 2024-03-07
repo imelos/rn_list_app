@@ -4,9 +4,11 @@ import {ListApiParams} from './listApiSlice';
 import {useDebouncedCallback} from 'use-debounce';
 import {TextInput, ActivityIndicator} from 'react-native-paper';
 
-import ListItem from './list-item/ListItem';
-
-import {useLazyGetListItemsQuery, ListItemProps} from './listApiSlice';
+import ListItem from '@src/features/list/list-item/ListItem';
+import {
+  useLazyGetListItemsQuery,
+  ListItemProps,
+} from '@src/features/list/listApiSlice';
 
 const List: React.FC = () => {
   const [text, setText] = useState<string>('');
@@ -19,6 +21,8 @@ const List: React.FC = () => {
     world: 'de',
   });
   const listRef = useRef<FlatList>(null);
+  const momentumRef = useRef<boolean>(false);
+  const fullListLoadedRef = useRef<boolean>(false);
 
   const [getListItems, {isLoading}] = useLazyGetListItemsQuery();
 
@@ -31,29 +35,48 @@ const List: React.FC = () => {
       .unwrap()
       .then(res => {
         setIsPageLoading(false);
-        setList(
+        const newList =
           params.p === 1
             ? res.data.items.materials
-            : [...list, ...res.data.items.materials],
-        );
+            : [...list, ...res.data.items.materials];
+        setList(newList);
         if (params.p === 1) {
           listRef.current?.scrollToOffset({animated: false, offset: 0});
         }
+        fullListLoadedRef.current = newList.length >= res.data.total;
       });
   };
 
-  const debouncedGetListItems = useDebouncedCallback(() => {
-    makeGetListItemsRequest();
-  }, 300);
+  const debouncedGetListItems = useDebouncedCallback(
+    () => {
+      makeGetListItemsRequest();
+    },
+    300,
+    {leading: true, trailing: true},
+  );
 
   const changeSearchFilter = (val: string) => {
     setText(val);
+    console.log(val);
     setParams({
       limit: 20,
       p: 1,
       q: val,
-      world: 'de',
+      world: params.world,
     });
+  };
+
+  const onEndReached = ({distanceFromEnd}: {distanceFromEnd: number}) => {
+    if (!momentumRef.current && !fullListLoadedRef.current) {
+      setIsPageLoading(true);
+      setParams({
+        limit: 20,
+        p: params.p + 1,
+        q: params.q,
+        world: params.world,
+      });
+      momentumRef.current = true;
+    }
   };
 
   const renderItem = (item: ListItemProps) => {
@@ -67,17 +90,6 @@ const List: React.FC = () => {
   const renderFooter = () => {
     if (!isPageLoading) return null;
     return renderActivityIndicator();
-  };
-
-  const onEndReached = ({distanceFromEnd}: {distanceFromEnd: number}) => {
-    if (distanceFromEnd <= 0) return;
-    setIsPageLoading(true);
-    setParams({
-      limit: 20,
-      p: params.p + 1,
-      q: params.q,
-      world: params.world,
-    });
   };
 
   return (
@@ -99,7 +111,10 @@ const List: React.FC = () => {
             contentContainerStyle={{padding: 10}}
             keyExtractor={item => item.id.toString()}
             ListFooterComponent={renderFooter}
-            onEndReached={onEndReached}
+            onMomentumScrollBegin={() => {
+              momentumRef.current = false;
+            }}
+            onEndReached={list.length > 0 ? onEndReached : null}
             onEndReachedThreshold={0.5}
           />
         )}
