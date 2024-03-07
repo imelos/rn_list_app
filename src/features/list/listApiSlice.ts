@@ -1,14 +1,20 @@
 import {apiSlice} from '@src/API/apiSlice';
 
-type ListApiResponse = any;
+// type ListApiResponse = any;
 type ListApiParams = any;
+
+type BaseResponse = {
+  code: number;
+  errors: unknown[];
+  status: string;
+};
+
+type ListApiResponse = BaseResponse & {data: {items: any[]}};
 
 export const listApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getListItems: builder.query<ListApiResponse, ListApiParams>({
       query: params => {
-        console.log("params")
-        console.log(params);
         return {
           url: '/elastic',
           method: 'GET',

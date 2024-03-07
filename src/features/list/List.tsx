@@ -4,13 +4,15 @@ import {StyleSheet, View, Text} from 'react-native';
 import {useGetListItemsQuery} from './listApiSlice';
 
 const List: React.FC = () => {
-  const {data, isLoading, isSuccess, isError, error} = useGetListItemsQuery({});
+  const {data: res, isLoading, isSuccess, isError, error} = useGetListItemsQuery({});
 
   if (isLoading) {
   } else {
     if (isSuccess) {
-      console.log(data);
-      console.log(data.data.items);
+      console.log(res);
+      console.log(res.code)
+      console.log(res.status)
+    //   console.log(res.data.items);
     } else {
       console.log('request erorr1');
       console.log(error);
