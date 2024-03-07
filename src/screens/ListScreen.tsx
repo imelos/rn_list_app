@@ -2,10 +2,12 @@ import React from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import {Props} from '@src/navigation/Navigation';
 
+import List from '@src/features/list/List';
+
 const SliderScreen: React.FC<Props<'list'>> = ({route, navigation}) => {
   return (
     <View style={styles.container}>
-      <Text>list</Text>
+      <List />
     </View>
   );
 };
