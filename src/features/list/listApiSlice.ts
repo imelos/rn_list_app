@@ -7,6 +7,7 @@ export const listApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     getListItems: builder.query<ListApiResponse, ListApiParams>({
       query: params => {
+        console.log("params")
         console.log(params);
         return {
           url: '/elastic',
