@@ -16,7 +16,6 @@ class MainActivity : ReactActivity() {
    */
   override fun getMainComponentName(): String = "rn_list_app"
 
-  
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
    * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
