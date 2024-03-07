@@ -47,17 +47,12 @@ const List: React.FC = () => {
       });
   };
 
-  const debouncedGetListItems = useDebouncedCallback(
-    () => {
-      makeGetListItemsRequest();
-    },
-    300,
-    {leading: true, trailing: true},
-  );
+  const debouncedGetListItems = useDebouncedCallback(() => {
+    makeGetListItemsRequest();
+  }, 250);
 
   const changeSearchFilter = (val: string) => {
     setText(val);
-    console.log(val);
     setParams({
       limit: 20,
       p: 1,
@@ -114,7 +109,7 @@ const List: React.FC = () => {
             onMomentumScrollBegin={() => {
               momentumRef.current = false;
             }}
-            onEndReached={list.length > 0 ? onEndReached : null}
+            onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
           />
         )}

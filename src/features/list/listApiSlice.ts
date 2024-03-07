@@ -1,10 +1,4 @@
-import {apiSlice} from '@src/API/apiSlice';
-
-export type BaseResponse = {
-  code: number;
-  errors: unknown[];
-  status: string;
-};
+import {apiSlice, BaseResponse} from '@src/API/apiSlice';
 
 export type ListApiParams = {
   limit: number;
