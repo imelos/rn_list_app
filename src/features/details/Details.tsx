@@ -1,25 +1,55 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {Props} from '@src/navigation/Navigation';
 import {ListItemProps} from '../list/listApiSlice';
+import {useDeviceOrientation} from '@react-native-community/hooks';
+import {Surface, Text} from 'react-native-paper';
 
 const Details: React.FC<{data: ListItemProps}> = props => {
+  const orientation = useDeviceOrientation();
   return (
-    <View style={styles.container}>
-      <Text>{props.data.author.details.publicName}</Text>
+    <View
+      style={
+        orientation === 'portrait'
+          ? styles.containerPortrait
+          : styles.containerLandscape
+      }>
+      <View style={styles.section}>
+        <Image
+          resizeMode="contain"
+          style={styles.image}
+          source={{uri: props.data.firstPreviewImage.watermarked}}></Image>
+      </View>
+      <View style={styles.section}>
+        <Text variant="titleLarge" style={{textAlign: 'center'}}>
+          {props.data.title}
+        </Text>
+        <Text variant="bodyMedium">{props.data.author.details.publicName}</Text>
+        <View>
+          <Text variant="labelLarge">{props.data.price} €</Text>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  containerPortrait: {
     flex: 1,
-    position: 'relative',
+    flexDirection: 'column',
   },
-  btn: {
-    position: 'absolute',
-    left: 20,
-    top: 5,
+  containerLandscape: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  section: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });
 
