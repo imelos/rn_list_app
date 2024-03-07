@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  //   TextInput,
   FlatList,
-  //   ActivityIndicator,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import {ListApiParams} from './listApiSlice';
 import {useDebouncedCallback} from 'use-debounce';
@@ -13,31 +12,22 @@ import {TextInput, ActivityIndicator} from 'react-native-paper';
 
 import ListItem from './list-item/ListItem';
 
-import {
-  useGetListItemsQuery,
-  useLazyGetListItemsQuery,
-  ListItemProps,
-} from './listApiSlice';
+import {useLazyGetListItemsQuery, ListItemProps} from './listApiSlice';
 
 const List: React.FC = () => {
-  const [text, setText] = useState('');
-  const [getListItems, {isLoading, isError, data, error}] =
-    useLazyGetListItemsQuery();
+  const [text, setText] = useState<string>('');
+  const [list, setList] = useState<ListItemProps[]>([]);
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
   const [params, setParams] = useState<ListApiParams>({
     limit: 20,
     p: 1,
     q: '',
     world: 'de',
   });
-  const [list, setList] = useState<ListItemProps[]>([]);
+  const listRef = useRef<FlatList>(null);
 
-  //   const {
-  //     data: res,
-  //     isLoading,
-  //     isSuccess,
-  //     isError,
-  //     error,
-  //   } = useGetListItemsQuery(params);
+  const [getListItems, {isLoading}] = useLazyGetListItemsQuery();
+
   useEffect(() => {
     debouncedGetListItems();
   }, [params]);
@@ -46,15 +36,16 @@ const List: React.FC = () => {
     getListItems(params)
       .unwrap()
       .then(res => {
-        console.log('res');
-        // console.log(res);
-        console.log(res.data.items.materials[0].id);
-
+        console.log(res);
+        setIsPageLoading(false);
         setList(
           params.p === 1
             ? res.data.items.materials
             : [...list, ...res.data.items.materials],
         );
+        if (params.p === 1) {
+          listRef.current?.scrollToOffset({animated: false, offset: 0});
+        }
       });
   };
 
@@ -62,7 +53,7 @@ const List: React.FC = () => {
     makeGetListItemsRequest();
   }, 300);
 
-  const changeFilter = (val: string) => {
+  const changeSearchFilter = (val: string) => {
     console.log(val);
     setText(val);
     setParams({
@@ -77,13 +68,18 @@ const List: React.FC = () => {
     return <ListItem data={item} />;
   };
 
-  const renderFooter = () => {
-    // if (!loading) return null;
+  const renderActivityIndicator = () => {
     return <ActivityIndicator style={{marginVertical: 20}} />;
   };
 
-  const onEndReached = () => {
-    // Load more data when reaching the end of the list
+  const renderFooter = () => {
+    if (!isPageLoading) return null;
+    return renderActivityIndicator();
+  };
+
+  const onEndReached = ({distanceFromEnd}: {distanceFromEnd: number}) => {
+    if (distanceFromEnd === 0) return;
+    setIsPageLoading(true);
     setParams({
       limit: 20,
       p: params.p + 1,
@@ -91,25 +87,23 @@ const List: React.FC = () => {
       world: 'de',
     });
   };
-  console.log(list);
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        onChangeText={changeFilter}
+        onChangeText={changeSearchFilter}
         value={text}
         label="Search"
       />
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         {isLoading ? (
-          <ActivityIndicator style={{marginVertical: 20}} />
+          renderActivityIndicator()
         ) : (
           <FlatList
-            style={{width: '100%'}}
             data={list}
-            renderItem={data => {
-              return renderItem(data.item);
-            }}
+            ref={listRef}
+            renderItem={data => renderItem(data.item)}
             contentContainerStyle={{padding: 10}}
             keyExtractor={item => item.id.toString()}
             ListFooterComponent={renderFooter}
