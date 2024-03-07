@@ -7,15 +7,21 @@ import {Provider} from 'react-redux';
 import {store} from '@src/app/configureStore';
 
 import Navigation from '@src/navigation/Navigation';
+import {PaperProvider} from 'react-native-paper';
 // import {COLORS} from '@src/colors';
 
 function App(): React.JSX.Element {
   return (
     <Provider store={store}>
-      <SafeAreaProvider style={styles.container}>
-        <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
-        <Navigation />
-      </SafeAreaProvider>
+      <PaperProvider>
+        <SafeAreaProvider style={styles.container}>
+          <StatusBar
+            barStyle={'dark-content'}
+            backgroundColor={'transparent'}
+          />
+          <Navigation />
+        </SafeAreaProvider>
+      </PaperProvider>
     </Provider>
   );
 }

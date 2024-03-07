@@ -13,15 +13,16 @@ export type ListApiParams = {
   world: string;
 };
 
-export type ListItem = {
+export type ListItemProps = {
   firstPreviewImage: {watermarked: string};
   title: string;
   author: {details: {publicName: string}};
   price: number;
+  id: number;
 };
 
 export type ListApiResponse = BaseResponse & {
-  data: {items: {materials: ListItem[]}};
+  data: {items: {materials: ListItemProps[]}};
 };
 
 export const listApiSlice = apiSlice.injectEndpoints({
