@@ -4,12 +4,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/core';
+import {ListItemProps} from '@src/features/list/listApiSlice';
 
 import ListScreen from '@src/screens/ListScreen';
+import DetailsScreen from '@src/screens/DetailsScreen';
 
 export type RootStackParamList = {
-  photosPicker: undefined;
   list: undefined;
+  details: {
+    data: ListItemProps;
+  };
 };
 
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -42,6 +46,7 @@ export default function Navigation(): JSX.Element {
           headerShown: false,
         }}>
         <RootStack.Screen name="list" component={ListScreen} />
+        <RootStack.Screen name="details" component={DetailsScreen} />
       </RootStack.Navigator>
     </NavigationContainer>
   );
