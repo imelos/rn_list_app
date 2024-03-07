@@ -3,6 +3,7 @@ import {StyleSheet, View, FlatList} from 'react-native';
 import {ListApiParams} from './listApiSlice';
 import {useDebouncedCallback} from 'use-debounce';
 import {TextInput, ActivityIndicator} from 'react-native-paper';
+import {useDeviceOrientation} from '@react-native-community/hooks';
 
 import ListItem from '@src/features/list/list-item/ListItem';
 import {
@@ -25,6 +26,7 @@ const List: React.FC = () => {
   const fullListLoadedRef = useRef<boolean>(false);
 
   const [getListItems, {isLoading}] = useLazyGetListItemsQuery();
+  const orientation = useDeviceOrientation();
 
   useEffect(() => {
     debouncedGetListItems();
@@ -100,6 +102,7 @@ const List: React.FC = () => {
           renderActivityIndicator()
         ) : (
           <FlatList
+            key={orientation}
             data={list}
             ref={listRef}
             renderItem={data => renderItem(data.item)}
