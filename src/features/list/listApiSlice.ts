@@ -1,19 +1,28 @@
 import {apiSlice} from '@src/API/apiSlice';
 
-type BaseResponse = {
+export type BaseResponse = {
   code: number;
   errors: unknown[];
   status: string;
 };
 
-type ListApiParams = {
+export type ListApiParams = {
   limit: number;
   p: number;
   q: string;
   world: string;
 };
 
-type ListApiResponse = BaseResponse & {data: {items: any[]}};
+export type ListItem = {
+  firstPreviewImage: {watermarked: string};
+  title: string;
+  author: {details: {publicName: string}};
+  price: number;
+};
+
+export type ListApiResponse = BaseResponse & {
+  data: {items: {materials: ListItem[]}};
+};
 
 export const listApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
@@ -29,4 +38,4 @@ export const listApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useGetListItemsQuery} = listApiSlice;
+export const {useGetListItemsQuery, useLazyGetListItemsQuery} = listApiSlice;
