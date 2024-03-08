@@ -107,6 +107,7 @@ const List: React.FC = () => {
             ref={listRef}
             renderItem={data => renderItem(data.item)}
             contentContainerStyle={{padding: 10}}
+            initialNumToRender={5}
             keyExtractor={item => item.id.toString()}
             ListFooterComponent={renderFooter}
             onMomentumScrollBegin={() => {
