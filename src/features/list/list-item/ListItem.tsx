@@ -1,10 +1,9 @@
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
+import {Card, Text} from 'react-native-paper';
 import {ListItemProps} from '@src/features/list/listApiSlice';
 import {useNavigation} from '@react-navigation/native';
 import {ScreenNavigationProp} from '@src/navigation/Navigation';
-
-import {Card, Text} from 'react-native-paper';
 
 const ListItem: React.FC<{data: ListItemProps}> = props => {
   const navigaion = useNavigation<ScreenNavigationProp<'details'>>();

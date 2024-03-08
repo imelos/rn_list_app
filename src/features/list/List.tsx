@@ -105,9 +105,9 @@ const List: React.FC = () => {
             key={orientation}
             data={list}
             ref={listRef}
+            style={styles.list}
             renderItem={data => renderItem(data.item)}
             contentContainerStyle={{padding: 10}}
-            initialNumToRender={5}
             keyExtractor={item => item.id.toString()}
             ListFooterComponent={renderFooter}
             onMomentumScrollBegin={() => {
@@ -131,6 +131,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+  },
+  list: {
+    width: '100%',
   },
   input: {
     margin: 10,
