@@ -22,7 +22,7 @@ const List: React.FC = () => {
     world: 'de',
   });
   const listRef = useRef<FlatList>(null);
-  const momentumRef = useRef<boolean>(false);
+  const momentumRef = useRef<boolean>(true);
   const fullListLoadedRef = useRef<boolean>(false);
 
   const [getListItems, {isLoading}] = useLazyGetListItemsQuery();
@@ -65,6 +65,7 @@ const List: React.FC = () => {
 
   const onEndReached = ({distanceFromEnd}: {distanceFromEnd: number}) => {
     if (!momentumRef.current && !fullListLoadedRef.current) {
+      console.log('first');
       setIsPageLoading(true);
       setParams({
         limit: 20,
