@@ -65,7 +65,6 @@ const List: React.FC = () => {
 
   const onEndReached = ({distanceFromEnd}: {distanceFromEnd: number}) => {
     if (!momentumRef.current && !fullListLoadedRef.current) {
-      console.log('first');
       setIsPageLoading(true);
       setParams({
         limit: 20,
