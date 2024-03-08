@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
-import {ListApiParams} from './listApiSlice';
 import {useDebouncedCallback} from 'use-debounce';
 import {TextInput, ActivityIndicator} from 'react-native-paper';
 import {useDeviceOrientation} from '@react-native-community/hooks';
+import {ListApiParams} from '@src/features/list/listApiSlice';
 
 import ListItem from '@src/features/list/list-item/ListItem';
 import {
